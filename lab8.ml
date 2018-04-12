@@ -131,13 +131,13 @@ unregisters the listener with that id from the event if there is
 one. If there is no listener with that id, do nothing.
 ......................................................................*)
 
-  let rec remove_listener (evt : 'a event) (i : id) : unit =
-    let rec remove_listener_inner (nevt : 'a waiter list) (ni : id) : 'a waiter list =
+  let remove_listener (evt : 'a event) (i : id) : unit =
+    let rec remove (nevt : 'a waiter list) (ni : id) : 'a waiter list =
       match nevt with
       | [] -> []
-      | h :: t -> if h.id = ni then t else h :: remove_listener_inner t ni
+      | h :: t -> if h.id = ni then t else h :: remove t ni
     in
-    evt := (remove_listener_inner !evt i)
+    evt := (remove !evt i)
 
 (*......................................................................
 Exercise 3: Write fire_event, which will execute all event handlers
