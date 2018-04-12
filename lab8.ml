@@ -134,7 +134,9 @@ one. If there is no listener with that id, do nothing.
   let rec remove_listener (evt : 'a event) (i : id) : unit =
     match !evt with
     | [] -> ()
-    | h :: t -> if h.id = i then evt := t else remove_listener (ref t) i
+    | h :: t ->
+      if h.id = i then (evt := t; remove_listener (ref t) i)
+      else remove_listener (ref t) i
 
 (*......................................................................
 Exercise 3: Write fire_event, which will execute all event handlers
